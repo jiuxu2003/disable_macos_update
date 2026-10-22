@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>PayloadType</key>
+            <string>com.apple.applicationaccess</string>
+            <key>PayloadIdentifier</key>
+            <string>local.disable-macos-update.delayed-major</string>
+            <key>PayloadUUID</key>
+            <string>AD7F8D80-32F4-4D90-B797-C761F3E3EB84</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>PayloadDisplayName</key>
+            <string>Delay major macOS updates</string>
+            <key>PayloadDescription</key>
+            <string>隐藏大版本 macOS 升级（如 macOS 26/27）90 天，小版本与安全补丁不受影响。</string>
+            <key>PayloadOrganization</key>
+            <string>disable_macos_update</string>
+            <key>forceDelayedMajorSoftwareUpdates</key>
+            <true/>
+            <key>enforcedMajorSoftwareUpdateDelay</key>
+            <integer>90</integer>
+        </dict>
+    </array>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadIdentifier</key>
+    <string>local.disable-macos-update.delayed-major.profile</string>
+    <key>PayloadUUID</key>
+    <string>BC365842-B6F4-4901-8561-AC8D96A9CB24</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadDisplayName</key>
+    <string>Delay major macOS updates (90 days)</string>
+    <key>PayloadDescription</key>
+    <string>把大版本 macOS 升级推迟 90 天，减少升级提醒与系统设置红点。移除本描述文件即可恢复原有行为。</string>
+    <key>PayloadOrganization</key>
+    <string>disable_macos_update</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadScope</key>
+    <string>System</string>
+</dict>
+</plist>

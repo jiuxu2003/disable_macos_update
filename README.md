@@ -114,6 +114,25 @@ launchctl enable gui/$(id -u)/com.apple.SoftwareUpdateNotificationManager
 - `launchctl disable` 只对当前登录用户生效；多用户机器上每位用户需要各自执行，或把脚本放进登录项。
 - `com.apple.SoftwareUpdateNotificationManager` 存在于 macOS 13+；在更老的系统上这一步会提示失败但不会中断，`status` 里会显示「未加载」。
 
-## 另一种思路：只延迟、不屏蔽
+## 可选：延迟大版本更新（描述文件）
 
-企业常用的做法是安装一个 `com.apple.applicationaccess` 配置描述文件，用 `forceDelayedSoftwareUpdates` + `enforcedSoftwareUpdateDelay`（如 90 天）让新更新**在延迟期内不可见**，到期后仍会出现——这样红点自然消失，又不会永久错过安全补丁。需要时可以用 `profiles install -path xxx.mobileconfig` 安装，`profiles remove` 卸载。本脚本没有内置这一方式，因为它需要一个单独的 `.mobileconfig` 文件。
+[profiles/DelayMajorOSUpdates-90d.mobileconfig](profiles/DelayMajorOSUpdates-90d.mobileconfig) 用 `com.apple.applicationaccess` 的 `forceDelayedMajorSoftwareUpdates` + `enforcedMajorSoftwareUpdateDelay = 90`，把**大版本升级**（如 macOS 26/27）隐藏 90 天，小版本和安全补丁按原样出现。
+
+安装（双击文件也可以，需要管理员密码）：
+
+```bash
+sudo profiles install -path profiles/DelayMajorOSUpdates-90d.mobileconfig
+```
+
+移除：
+
+```bash
+sudo profiles remove -identifier local.disable-macos-update.delayed-major.profile
+```
+
+几点说明：
+
+- 描述文件未签名，安装时系统会提示「未签名」，确认即可；它只改软件更新策略，不涉及其他权限。
+- 90 天到期后大版本升级会重新出现，续期就再装一次（或改 `enforcedMajorSoftwareUpdateDelay` 后重装）。
+- 如果发现安全更新也被一起延迟了，删掉描述文件即可恢复；想让**所有**更新都延迟，把 payload 里的两个键换成 `forceDelayedSoftwareUpdates` + `enforcedSoftwareUpdateDelay`。
+- macOS 26/27 起 Apple 在把这部分往声明式管理（`com.apple.configuration.softwareupdate.settings`）迁移；如果更高版本上描述文件不生效，用 `--with-hosts` 更直接。
